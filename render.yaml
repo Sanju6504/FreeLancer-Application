@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: project-backend
+    env: node
+    rootDir: backend
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_ORIGIN
+        value: https://project-frontend.onrender.com  # update after first deploy
+      - key: MONGODB_URI
+        sync: false  # set in Render dashboard
+
+  - type: static
+    name: project-frontend
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    publishPath: "dist"
+    envVars:
+      - key: VITE_API_BASE
+        value: https://project-backend.onrender.com/api
